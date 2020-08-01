@@ -11,7 +11,21 @@ typedef struct sArray
     int elemSize;
 } Array;
 
-#define ARR_INIT(array, cap, type) array_init(array, cap, sizeof(type))
+#define ARR_INIT(array, type) array_init(array, 8, sizeof(type))
+#define ARR_INIT_CAP(array, type, cap) array_init(array, cap, sizeof(type))
+#define ARR_PUSH(array, type, value) \
+    do \
+    { \
+        type _ = value; \
+        array_push(array, &_); \
+    } while(false)
+#define ARR_SET(array, type, index, value) \
+    do \
+    { \
+        type _ = value; \
+        array_set(array, index, &_); \
+    } while(false)
+
 void array_init(Array* array, int cap, int elemSize);
 void array_free(Array* array);
 
