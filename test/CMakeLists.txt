@@ -1,0 +1,50 @@
+aux_source_directory(. SRC_FILES)
+
+file(GLOB_RECURSE HEADERS ./*.h)
+file(GLOB_RECURSE GMOCK_HEADERS "${PROJECT_SOURCE_DIR}/include/gmock/*.h")
+file(GLOB_RECURSE GTEST_HEADERS "${PROJECT_SOURCE_DIR}/include/gtest/*.h")
+
+source_group("Headers" FILES ${HEADERS})
+source_group("Headers/gmock" FILES ${GMOCK_HEADERS})
+source_group("Headers/gtest" FILES ${GTEST_HEADERS})
+
+include_directories("${PROJECT_SOURCE_DIR}/include")
+include_directories("${PROJECT_SOURCE_DIR}/include/gtest")
+include_directories("${PROJECT_SOURCE_DIR}/include/gmock")
+include_directories("${PROJECT_SOURCE_DIR}/src")
+include_directories("${PROJECT_SOURCE_DIR}/test")
+
+set(EXECUTABLE_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/bin/Test")
+
+add_executable(
+    RLib_Test
+    ${SRC_FILES}
+    ${HEADERS}
+    ${GTEST_HEADERS}
+    ${GMOCK_HEADERS}
+)
+
+get_static_lib_path(gtest gmock GMOCKD_LIB GMOCK_LIB)
+get_static_lib_path(gtest gtest GTESTD_LIB GTEST_LIB)
+
+message(STATUS "-+ GMOCKD_LIB: ${GMOCKD_LIB}")
+message(STATUS "-+ GMOCK_LIB: ${GMOCK_LIB}")
+message(STATUS "-+ GTESTD_LIB: ${GTESTD_LIB}")
+message(STATUS "-+ GTEST_LIB: ${GTEST_LIB}")
+
+if (WIN32 OR MSVC)
+    target_link_libraries(
+        RLib_Test
+        RLib
+        debug ${GMOCKD_LIB} optimized ${GMOCK_LIB}
+        debug ${GTESTD_LIB} optimized ${GTEST_LIB}
+    )
+else()
+    target_link_libraries(
+        RLib_Test
+        RLib
+        debug ${GMOCKD_LIB} optimized ${GMOCK_LIB}
+        debug ${GTESTD_LIB} optimized ${GTEST_LIB}
+        pthread
+    )
+endif()
