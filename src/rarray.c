@@ -49,7 +49,8 @@ void array_push(Array* array, void* value)
     if (array->count == array->capacity)
     {
         int newCap = GROW_CAPACITY(array->capacity);
-        ALLOCATE_ARR(array, newCap);
+        array->data = ALLOCATE_ARR(array, newCap);
+        array->capacity = newCap;
     }
 
     array->count++;
@@ -67,6 +68,7 @@ bool array_pop(Array* array, void* value)
     if (value != NULL)
         ARR_GET_DATA(array, array->count - 1, value);
 
+    array->count--;
     return true;
 }
 
@@ -110,6 +112,10 @@ bool array_remove(Array* array, int index)
     if (index < 0 || index >= array->count)
         return false;
 
-    memset(ARR_DATA_OFFSET(array, index), 0, array->elemSize);
+    memcpy(ARR_DATA_OFFSET(array, index), 
+           ARR_DATA_OFFSET(array, index + 1), 
+           array->elemSize * (array->count - index - 1));
+
+    array->count--;
     return true;
 }

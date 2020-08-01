@@ -4,10 +4,25 @@
 
 namespace RLibTest
 {
-    class ArrayTest : public ::testing::Test
+    namespace RLibArrayTest
     {
-    protected:
-        void SetUp() override;
-        void TearDown() override;
-    };
+        struct A
+        {
+            double f;
+        };
+
+        struct B
+        {
+            int i;
+            A a;
+            B* b;
+        };
+
+        class ArrayTest : public ::testing::Test
+        {
+        protected:
+            void SetUp() override;
+            void TearDown() override;
+        };
+    }
 } // namespace RLibTest
