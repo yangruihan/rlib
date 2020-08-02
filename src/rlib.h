@@ -8,7 +8,7 @@ extern "C"
 
 #include "rcommon.h"
 #include "rlog.h"
-
+#include "rmem.h"
 #include "rarray.h"
 
 #ifdef __cplusplus
