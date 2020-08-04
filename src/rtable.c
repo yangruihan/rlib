@@ -6,29 +6,35 @@
 
 #define TABLE_MAX_LOAD 0.75
 
+#define KEY(entry) ((uint32_t*)(entry))
+#define VALUE(entry) ((char*)(entry) + s_u32size)
+
 #define TABLE_DATA_OFFSET(table, index) \
-    ((Entry*)(((char*)(table->entries)) + (table->elemSize * index)))
+    (((char*)(table->entries)) + (table->entrySize * index))
 
-#define ENTRY_IS_NULL(e) \
-    ((e)->key == 0 && (e)->value == NULL)
+#define ENTRIES_DATA_OFFSET(entries, elemSize, index) \
+    (((char*)(entries)) + ((elemSize + s_u32size) * index))
 
-static Entry* findEntry(char* entries, int elemSize, int cap, uint32_t key)
+static int s_u32size = sizeof(uint32_t); 
+
+static void* findEntry(char* entries, int elemSize, int cap, uint32_t key)
 {
     uint32_t index = key % cap;
-    Entry* tombstone = NULL;
+    char* tombstone = NULL;
 
     for(;;)
     {
-        Entry* entry = (Entry*)(entries + (index * elemSize));
+        char* entry = ENTRIES_DATA_OFFSET(entries, elemSize, index);
+        uint32_t entry_key = *KEY(entry);
 
-        if (entry->key == 0)
+        if (entry_key == 0)
         {
-            if (entry->value == NULL)
+            if (*VALUE(entry) == 1)
                 return tombstone != NULL ? tombstone : entry;
             else
                 if (tombstone == NULL) tombstone = entry;
         }
-        else if (entry->key == key)
+        else if (entry_key == key)
         {
             return entry;
         }
@@ -39,23 +45,29 @@ static Entry* findEntry(char* entries, int elemSize, int cap, uint32_t key)
 
 static void adjustCap(Table* t, int cap)
 {
-    char* entries = ALLOCATE(char, cap * t->elemSize);
-    memset(entries, 0, cap * t->elemSize);
+    int sumMemLen = cap * t->entrySize;
+    char* entries = ALLOCATE(char, sumMemLen);
+    for (int i = 0; i < cap; i++)
+    {
+        char* entry = ENTRIES_DATA_OFFSET(entries, t->elemSize, i);
+        memset(entry, 0, t->elemSize);
+        *VALUE(entry) = 1;
+    }
 
     t->count = 0;
     for (size_t i = 0; i < t->capacity; i++)
     {
-        Entry* entry = TABLE_DATA_OFFSET(t, i);
-        if (ENTRY_IS_NULL(entry)) continue;
+        char* entry = TABLE_DATA_OFFSET(t, i);
+        if (*KEY(entry) == 0 && *VALUE(entry) == 1) continue;
 
-        Entry* dest = findEntry(entries, t->elemSize, cap, entry->key);
-        dest->key = entry->key;
-        dest->value = entry->value;
+        char* dest = findEntry(entries, t->elemSize, cap, *KEY(entry));
+        *KEY(dest) = *KEY(entry);
+        *VALUE(dest) = *VALUE(dest);
         t->count++;
     }
 
     if (t->entries)
-        FREE_ARRAY(char, (char*)t->entries, t->capacity * t->elemSize);
+        FREE_ARRAY(char, (char*)t->entries, t->capacity * t->entrySize);
 
     t->entries = entries;
     t->capacity = cap;
@@ -69,6 +81,7 @@ void table_init(Table* t, int elemSize)
     t->count = 0;
     t->capacity = 0;
     t->elemSize = elemSize;
+    t->entrySize = s_u32size + elemSize;
     t->entries = NULL;
 }
 
@@ -78,7 +91,7 @@ void table_free(Table* t)
         return;
 
     if (t->entries)
-        FREE_ARRAY(char, t->entries, t->capacity * t->elemSize);
+        FREE_ARRAY(char, t->entries, t->capacity * t->entrySize);
 
     table_init(t, 0);
 }
@@ -88,10 +101,12 @@ bool table_get(Table* t, uint32_t key, void* val)
     if (t == NULL || t->count == 0)
         return false;
 
-    Entry* entry = findEntry(t->entries, t->elemSize, t->capacity, key);
-    if (ENTRY_IS_NULL(entry)) return false;
+    char* entry = findEntry(t->entries, t->elemSize, t->capacity, key);
+    if (*KEY(entry) == 0) return false;
 
-    memcpy(val, &entry->value, t->elemSize);
+    if (val != NULL)
+        memcpy(val, VALUE(entry), t->elemSize);
+
     return true;
 }
 
@@ -106,11 +121,11 @@ bool table_set(Table* t, uint32_t key, void* val)
         adjustCap(t, cap);
     }
 
-    Entry* entry = findEntry(t->entries, t->elemSize, t->capacity, key);
-    bool isNewKey = ENTRY_IS_NULL(entry);
+    char* entry = findEntry(t->entries, t->elemSize, t->capacity, key);
+    bool isNewKey = *KEY(entry) == 0;
 
-    entry->key = key;
-    memcpy(&entry->value, val, t->elemSize);
+    *KEY(entry) = key;
+    memcpy(VALUE(entry), val, t->elemSize);
 
     if (isNewKey) t->count++;
 
@@ -122,10 +137,9 @@ bool table_del(Table* t, uint32_t key)
     if (t == NULL || t->count == 0)
         return false;
 
-    Entry* entry = findEntry(t->entries, t->elemSize, t->capacity, key);
+    char* entry = findEntry(t->entries, t->elemSize, t->capacity, key);
 
-    entry->key = 0;
-    memset(entry->value, 0, t->elemSize);
+    *KEY(entry) = 0;
 
     return true;
 }

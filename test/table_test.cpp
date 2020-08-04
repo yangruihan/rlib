@@ -24,6 +24,7 @@ namespace RLibTest
             ASSERT_EQ(t->count, 0);
             ASSERT_EQ(t->capacity, 0);
             ASSERT_EQ(t->elemSize, sizeof(int));
+            ASSERT_EQ(t->entrySize, sizeof(int) + sizeof(uint32_t));
             ASSERT_TRUE(t->entries == NULL);
         }
 
@@ -36,6 +37,7 @@ namespace RLibTest
             ASSERT_EQ(t->count, 0);
             ASSERT_EQ(t->capacity, 0);
             ASSERT_EQ(t->elemSize, 0);
+            ASSERT_EQ(t->entrySize, sizeof(uint32_t));
             ASSERT_TRUE(t->entries == NULL);
         }
 
@@ -73,6 +75,13 @@ namespace RLibTest
 
             ASSERT_TRUE(table_get(t, 3, &ret));
             ASSERT_EQ(ret, 15);
+
+            TABLE_SET(t, int, 2, 30);
+            ASSERT_TRUE(table_get(t, 2, &ret));
+            ASSERT_EQ(ret, 30);
+
+            ASSERT_TRUE(table_del(t, 2));
+            ASSERT_FALSE(table_get(t, 2, nullptr));
         }
     }
 }
