@@ -6,7 +6,9 @@
 #include <stdbool.h>
 #include <time.h>
 
-typedef struct sLogEvent
+#include "rcommon.h"
+
+struct RLogEvent
 {
     va_list     ap;
     const char* fmt;
@@ -15,12 +17,12 @@ typedef struct sLogEvent
     void*       udata;
     int         line;
     int         level;
-} RLogEvent;
+};
 
-typedef void (*RLogLogFn) (RLogEvent* ev);
+typedef void (*RLogLogFn) (LogEvent* ev);
 typedef void (*RLogLockFn)(bool lock, void* udata);
 
-typedef enum
+typedef enum RLogLevel
 {
     RLOG_TRACE,
     RLOG_DEBUG,
@@ -28,7 +30,7 @@ typedef enum
     RLOG_WARN,
     RLOG_ERROR,
     RLOG_FATAL
-} RLogLevel;
+} LogLevel;
 
 #define RLOG_TRACE(...) rlog_log(RLOG_TRACE, __FILE__, __LINE__, __VA_ARGS__)
 #define RLOG_DEBUG(...) rlog_log(RLOG_DEBUG, __FILE__, __LINE__, __VA_ARGS__)

@@ -30,7 +30,7 @@ static const char *levelColors[] =
 };
 #endif
 
-static void stdoutCallback(RLogEvent* ev)
+static void stdoutCallback(LogEvent* ev)
 {
     char buf[16];
     buf[strftime(buf, sizeof(buf), "%H:%M:%S", ev->time)] = '\0';
@@ -49,7 +49,7 @@ static void stdoutCallback(RLogEvent* ev)
     fflush(ev->udata);
 }
 
-static void fileCallback(RLogEvent* ev)
+static void fileCallback(LogEvent* ev)
 {
     char buf[64];
     buf[strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", ev->time)] = '\0';
@@ -71,7 +71,7 @@ static void unlock(void)
     if (L.lock) { L.lock(false, L.udata); }
 }
 
-static void initEvent(RLogEvent* ev, void* udata)
+static void initEvent(LogEvent* ev, void* udata)
 {
     if (!ev->time)
     {
@@ -124,7 +124,7 @@ int rlog_addFp(FILE* fp, const int level)
 
 void rlog_log(const int level, const char* file, const int line, const char* fmt, ...)
 {
-    RLogEvent ev = {
+    LogEvent ev = {
         .fmt = fmt,
         .file = file,
         .line = line,

@@ -10,6 +10,7 @@ extern "C"
 #include "rlog.h"
 #include "rmem.h"
 #include "rarray.h"
+#include "rtable.h"
 
 #ifdef __cplusplus
 }
