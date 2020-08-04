@@ -15,4 +15,8 @@
 #define false 0
 #endif
 
+typedef struct RArray Array;
+typedef struct RTable Table;
+typedef struct RLogEvent LogEvent;
+
 #endif // __R_COMMON_H_

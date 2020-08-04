@@ -3,13 +3,13 @@
 
 #include "rcommon.h"
 
-typedef struct sArray
+struct RArray
 {
     void* data;
     int count;
     int capacity;
     int elemSize;
-} Array;
+};
 
 #define ARR_INIT(array, type) array_init(array, 8, sizeof(type))
 #define ARR_INIT_CAP(array, type, cap) array_init(array, cap, sizeof(type))
