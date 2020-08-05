@@ -8,8 +8,11 @@ struct RTable
     int   count;
     int   capacity;
     int   elemSize;
-    int   entrySize; // entrySize = elemSize + sizeof(uint32_t)
     void* entries;
+
+    int   _entrySize; // entrySize = elemSize + sizeof(uint32_t)
+    char* _zeroValue; // record zero hash value 
+    char* _emptyMem;  // empty mem to compare
 };
 
 #define TABLE_INIT(t, type) table_init(t, sizeof(type))
