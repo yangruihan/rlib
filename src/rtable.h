@@ -16,6 +16,8 @@ struct RTable
     char* _emptyMem;    // empty mem to compare
 };
 
+typedef void (*TableIterFunc) (uint32_t key, void* value);
+
 #define TABLE_INIT(t, type) table_init(t, sizeof(type))
 #define TABLE_SET(t, type, key, value) \
     do \
@@ -29,5 +31,7 @@ void table_free(Table* t);
 bool table_get(Table* t, uint32_t key, void* val);
 bool table_set(Table* t, uint32_t key, void* val);
 bool table_del(Table* t, uint32_t key);
+void table_keys(Table* t, uint32_t* keys);
+void table_iter(Table* t, TableIterFunc func);
 
 #endif // __R_TABLE_H_

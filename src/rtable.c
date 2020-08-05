@@ -212,3 +212,43 @@ bool table_del(Table* t, uint32_t key)
 
     return found;
 }
+
+void table_keys(Table* t, uint32_t* keys)
+{
+    if (t == NULL || keys == NULL)
+        return;
+
+    size_t index = 0;
+
+    if (t->_zeroSetFlag)
+    {
+        keys[index] = 0;
+        index++;
+    }
+
+    for (size_t i = 0; i < t->capacity; i++)
+    {
+        char* entry = TABLE_DATA_OFFSET(t, i);
+        if (*KEY(entry) == 0) continue;
+
+        keys[index] = *KEY(entry);
+        index++;
+    }
+}
+
+void table_iter(Table* t, TableIterFunc func)
+{
+    if (t == NULL || func == NULL)
+        return;
+
+    if (t->_zeroSetFlag)
+        func(0, t->_zeroValue);
+
+    for (size_t i = 0; i < t->capacity; i++)
+    {
+        char* entry = TABLE_DATA_OFFSET(t, i);
+        if (*KEY(entry) == 0) continue;
+
+        func(*KEY(entry), VALUE(entry));
+    }
+}

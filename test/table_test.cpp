@@ -213,5 +213,45 @@ namespace RLibTest
 
             table_free(t);
         }
+
+        TEST_F(TableTest, TestKeys)
+        {
+            Table _;
+            Table* t = &_;
+            TABLE_INIT(t, int);
+
+            for (int i = 0; i < TEST_COUNT; i++)
+            {
+                TABLE_SET(t, int, i, i);
+            }
+
+            uint32_t keys[TEST_COUNT];
+            table_keys(t, keys);
+
+            for (int i = 0; i < TEST_COUNT; i++)
+            {
+                ASSERT_EQ(keys[i], i);
+            }
+        }
+
+        static void tableIterTestFunc(uint32_t key, void* value)
+        {
+            int v = *(int*)value;
+            ASSERT_EQ(key, v);
+        }
+
+        TEST_F(TableTest, TestIter)
+        {
+            Table _;
+            Table* t = &_;
+            TABLE_INIT(t, int);
+
+            for (int i = 0; i < TEST_COUNT; i++)
+            {
+                TABLE_SET(t, int, i, i);
+            }
+
+            table_iter(t, &tableIterTestFunc);
+        }
     }
 }
