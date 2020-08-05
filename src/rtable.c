@@ -71,7 +71,7 @@ static void adjustCap(Table* t, int cap)
         char* dest = findEntry(entries, t->elemSize, cap, *KEY(entry),
                                t->_emptyMem, t->_zeroValue, NULL);
         *KEY(dest) = *KEY(entry);
-        *VALUE(dest) = *VALUE(dest);
+        memcpy(VALUE(dest), VALUE(entry), t->elemSize);
         t->count++;
     }
 

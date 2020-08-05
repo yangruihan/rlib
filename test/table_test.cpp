@@ -116,6 +116,8 @@ namespace RLibTest
 
             ASSERT_TRUE(t->entries != NULL);
             ASSERT_EQ(t->count, 3);
+
+            table_free(t);
         }
 
         TEST_F(TableTest, TestPointerType)
@@ -167,6 +169,49 @@ namespace RLibTest
             ASSERT_TRUE(table_del(t, 0));
             ASSERT_FALSE(table_get(t, 0, nullptr));
             ASSERT_EQ(t->count, 2);
+
+            table_free(t);
+        }
+
+        TEST_F(TableTest, TestSetGet)
+        {
+            Table _;
+            Table* t = &_;
+            TABLE_INIT(t, int);
+
+            for (int i = 0; i < TEST_COUNT; i++)
+            {
+                TABLE_SET(t, int, i, i);
+            }
+
+            int ret;
+            for (int i = 0; i < TEST_COUNT; i++)
+            {
+                ASSERT_TRUE(table_get(t, i, &ret));
+                ASSERT_EQ(ret, i);
+            }
+
+            table_free(t);
+        }
+
+        TEST_F(TableTest, TestDel)
+        {
+            Table _;
+            Table* t = &_;
+            TABLE_INIT(t, int);
+
+            for (int i = 0; i < TEST_COUNT; i++)
+            {
+                TABLE_SET(t, int, i, i);
+            }
+            
+            for (int i = 0; i < TEST_COUNT; i++)
+            {
+                ASSERT_TRUE(table_del(t, i));
+                ASSERT_EQ(t->count, TEST_COUNT - i - 1);
+            }
+
+            table_free(t);
         }
     }
 }

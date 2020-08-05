@@ -25,6 +25,8 @@ namespace RLibTest
             ASSERT_EQ(ap->capacity, 8);
             ASSERT_EQ(ap->count, 0);
             ASSERT_EQ(ap->elemSize, sizeof(int));
+
+            array_free(ap);
         }
 
         TEST_F(ArrayTest, TestFree)
@@ -64,6 +66,8 @@ namespace RLibTest
             ASSERT_EQ(ap->count, 1);
             ASSERT_TRUE(array_get(ap, 0, &ret));
             ASSERT_EQ(ret, 10);
+
+            array_free(ap);
         }
 
         TEST_F(ArrayTest, TestPointerType)
@@ -110,6 +114,8 @@ namespace RLibTest
 
             ASSERT_TRUE(array_remove(ap, 1));
             ASSERT_EQ(ap->count, 1);
+
+            array_free(ap);
         }
 
         TEST_F(ArrayTest, PushTest)
@@ -128,6 +134,8 @@ namespace RLibTest
             int ret;
             ASSERT_TRUE(array_get(ap, 50, &ret));
             ASSERT_EQ(ret, 5);
+
+            array_free(ap);
         }
 
         TEST_F(ArrayTest, PopTest)
@@ -150,6 +158,8 @@ namespace RLibTest
 
             ASSERT_EQ(ap->count, 0);
             ASSERT_FALSE(array_pop(ap, nullptr));
+
+            array_free(ap);
         }
 
         TEST_F(ArrayTest, TestSetGet)
@@ -182,6 +192,8 @@ namespace RLibTest
             ASSERT_FALSE(array_set(ap, -1, &temp));
             ASSERT_FALSE(array_get(ap, TEST_COUNT + 1, &temp));
             ASSERT_FALSE(array_get(ap, -1, &temp));
+
+            array_free(ap);
         }
 
         TEST_F(ArrayTest, TestRemove)
@@ -208,6 +220,8 @@ namespace RLibTest
             ASSERT_EQ(ap->count, 1);
             ASSERT_TRUE(array_remove(ap, 0));
             ASSERT_EQ(ap->count, 0);
+
+            array_free(ap);
         }
     }
 } // namespace RLibTest
