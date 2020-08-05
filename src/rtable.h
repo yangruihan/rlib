@@ -10,9 +10,10 @@ struct RTable
     int   elemSize;
     void* entries;
 
-    int   _entrySize; // entrySize = elemSize + sizeof(uint32_t)
-    char* _zeroValue; // record zero hash value 
-    char* _emptyMem;  // empty mem to compare
+    int   _entrySize;   // entrySize = elemSize + sizeof(uint32_t)
+    bool  _zeroSetFlag; // whether set zero
+    char* _zeroValue;   // record zero hash value 
+    char* _emptyMem;    // empty mem to compare
 };
 
 #define TABLE_INIT(t, type) table_init(t, sizeof(type))
