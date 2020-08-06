@@ -119,3 +119,11 @@ bool array_remove(Array* array, int index)
     array->count--;
     return true;
 }
+
+void array_clear(Array* array)
+{
+    if (array == NULL)
+        return;
+
+    array->count = 0;
+}

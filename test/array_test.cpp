@@ -223,5 +223,24 @@ namespace RLibTest
 
             array_free(ap);
         }
+
+        TEST_F(ArrayTest, TestClear)
+        {
+            Array a;
+            Array* ap = &a;
+            ARR_INIT(ap, int);
+
+            for (size_t i = 0; i < TEST_COUNT; i++)
+            {
+                ARR_PUSH(ap, int, i);
+            }
+
+            ASSERT_EQ(ap->count, TEST_COUNT);
+
+            array_clear(ap);
+            ASSERT_EQ(ap->count, 0);
+
+            array_free(ap);
+        }
     }
 } // namespace RLibTest
