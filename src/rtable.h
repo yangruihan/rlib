@@ -35,5 +35,6 @@ bool table_set(Table* t, uint32_t key, void* val);
 bool table_del(Table* t, uint32_t key);
 void table_keys(Table* t, uint32_t* keys);
 void table_iter(Table* t, TableIterFunc func);
+bool table_eq(Table* a, Table* b);
 
 #endif // __R_TABLE_H_

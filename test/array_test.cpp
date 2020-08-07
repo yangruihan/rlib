@@ -242,5 +242,42 @@ namespace RLibTest
 
             array_free(ap);
         }
+
+        TEST_F(ArrayTest, TestEq)
+        {
+            Array a;
+            Array* ap = &a;
+            ARR_INIT(ap, int);
+
+            Array b;
+            Array* bp = &b;
+            ARR_INIT(bp, int);
+
+            Array c;
+            Array* cp = &c;
+            ARR_INIT(cp, double);
+
+            ASSERT_FALSE(array_eq(NULL, NULL));
+            ASSERT_FALSE(array_eq(ap, NULL));
+            ASSERT_TRUE(array_eq(ap, ap));
+            ASSERT_TRUE(array_eq(ap, bp));
+            ASSERT_FALSE(array_eq(ap, cp));
+
+            ARR_PUSH(ap, int, 5);
+            ASSERT_FALSE(array_eq(ap, bp));
+            ARR_PUSH(bp, int, 5);
+            ASSERT_TRUE(array_eq(ap, bp));
+
+            for (size_t i = 0; i < TEST_COUNT; i++)
+            {
+                ARR_PUSH(ap, int, 5);
+            }
+
+            for (size_t i = 0; i < TEST_COUNT; i++)
+            {
+                ARR_PUSH(bp, int, 5);
+            }
+            ASSERT_TRUE(array_eq(ap, bp));
+        }
     }
 } // namespace RLibTest

@@ -252,3 +252,49 @@ void table_iter(Table* t, TableIterFunc func)
         func(*KEY(entry), VALUE(entry));
     }
 }
+
+bool table_eq(Table* a, Table* b)
+{
+    if (a == b && a != NULL)
+        return true;
+
+    if (a == NULL || b == NULL)
+        return false;
+
+    if (a->count != b->count)
+        return false;
+
+    if (a->elemSize != b->elemSize)
+        return false;
+
+    if (a->_zeroSetFlag != b->_zeroSetFlag)
+        return false;
+
+    if (memcmp(a->_zeroValue, b->_zeroValue, a->elemSize) != 0)
+        return false;
+
+    char* bvalue = ALLOCATE(char, a->elemSize);
+    for (size_t i = 0; i < a->capacity; i++)
+    {
+        char* entry = TABLE_DATA_OFFSET(a, i);
+        uint32_t key = *KEY(entry);
+        if (key == 0) continue;
+
+        if (table_get(b, key, bvalue))
+        {
+            if (memcmp(VALUE(entry), bvalue, a->elemSize) != 0)
+                goto FALSE;
+        }
+        else
+        {
+            goto FALSE;
+        }
+    }
+
+    FREE_ARRAY(char, bvalue, a->elemSize);
+    return true;
+
+    FALSE:
+    FREE_ARRAY(char, bvalue, a->elemSize);
+    return false;
+}

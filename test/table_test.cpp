@@ -253,5 +253,41 @@ namespace RLibTest
 
             table_iter(t, &tableIterTestFunc);
         }
+
+        TEST_F(TableTest, TestEq)
+        {
+            Table _;
+            Table* a = &_;
+            TABLE_INIT(a, int);
+
+            Table _2;
+            Table* b = &_2;
+            TABLE_INIT(b, int);
+
+            Table _3;
+            Table* c = &_3;
+            TABLE_INIT(c, double);
+
+            ASSERT_FALSE(table_eq(NULL, NULL));
+            ASSERT_FALSE(table_eq(a, NULL));
+            ASSERT_TRUE(table_eq(a, a));
+            ASSERT_TRUE(table_eq(a, b));
+            ASSERT_FALSE(table_eq(a, c));
+
+            for (int i = 0; i < TEST_COUNT; i++)
+            {
+                TABLE_SET(a, int, i, i);
+                TABLE_SET(b, int, i, i);
+            }
+
+            ASSERT_TRUE(table_eq(a, b));
+
+            ASSERT_TRUE(table_del(b, 0));
+            ASSERT_FALSE(table_eq(a, b));
+            ASSERT_TRUE(table_del(a, 0));
+            ASSERT_TRUE(table_eq(a, b));
+            ASSERT_TRUE(table_del(b, 1));
+            ASSERT_FALSE(table_eq(a, b));
+        }
     }
 }
