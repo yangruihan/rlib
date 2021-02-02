@@ -34,5 +34,7 @@ bool array_pop(Array* array, void* value);
 bool array_set(Array* array, int index, void* value);
 bool array_get(Array* array, int index, void* value);
 bool array_remove(Array* array, int index);
+void array_clear(Array* array);
+bool array_eq(Array* a, Array* b);
 
 #endif

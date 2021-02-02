@@ -119,3 +119,36 @@ bool array_remove(Array* array, int index)
     array->count--;
     return true;
 }
+
+void array_clear(Array* array)
+{
+    if (array == NULL)
+        return;
+
+    array->count = 0;
+}
+
+bool array_eq(Array* a, Array* b)
+{
+    if (a == b && a != NULL)
+        return true;
+
+    if (a == NULL || b == NULL)
+        return false;
+
+    if (a->count != b->count)
+        return false;
+
+    if (a->elemSize != b->elemSize)
+        return false;
+
+    for (size_t i = 0; i < a->count; i++)
+    {
+        if (memcmp(ARR_DATA_OFFSET(a, i), 
+                   ARR_DATA_OFFSET(b, i),
+                   a->elemSize) != 0)
+            return false;
+    }
+
+    return true;
+}
