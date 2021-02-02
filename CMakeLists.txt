@@ -1,13 +1,16 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(RLib)
+project(rlib)
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 17)
 
+set(PROJ_SOURCE_ROOT ${PROJECT_SOURCE_DIR})
+
 # ---------- OPTIONS ----------
 option(DEBUG "Debug Version" off)
 option(COMMAND_LINE "Command Line Flag" off)
+option(RLIB_BUILD_TESTS "Build the RLib test programs" on)
 
 message(STATUS "* DEBUG FLAG: ${DEBUG}")
 message(STATUS "* COMMAND LINE FLAG: ${COMMAND_LINE}")
@@ -35,22 +38,25 @@ endif()
 # ---------- FUNCTIONS ----------
 function(get_static_lib_path SUB_FOLDER LIB_NAME DEBUG_OUT RELEASE_OUT)
     if (WIN32 OR MSVC)
-        set(${DEBUG_OUT} "${PROJECT_SOURCE_DIR}/libs/${SUB_FOLDER}/win/debug/${LIB_NAME}.lib" PARENT_SCOPE)
-        set(${RELEASE_OUT} "${PROJECT_SOURCE_DIR}/libs/${SUB_FOLDER}/win/release/${LIB_NAME}.lib" PARENT_SCOPE)
+        set(${DEBUG_OUT} "${PROJ_SOURCE_ROOT}/libs/${SUB_FOLDER}/win/debug/${LIB_NAME}.lib" PARENT_SCOPE)
+        set(${RELEASE_OUT} "${PROJ_SOURCE_ROOT}/libs/${SUB_FOLDER}/win/release/${LIB_NAME}.lib" PARENT_SCOPE)
         message(STATUS "+ Get static lib debug: ${DEBUG_OUT}")
         message(STATUS "+ Get static lib release: ${RELEASE_OUT}")
     elseif (APPLE)
-        set(${DEBUG_OUT} "${PROJECT_SOURCE_DIR}/libs/${SUB_FOLDER}/macos/debug/${LIB_NAME}.a" PARENT_SCOPE)
-        set(${RELEASE_OUT} "${PROJECT_SOURCE_DIR}/libs/${SUB_FOLDER}/macos/release/${LIB_NAME}.a" PARENT_SCOPE)
+        set(${DEBUG_OUT} "${PROJ_SOURCE_ROOT}/libs/${SUB_FOLDER}/macos/debug/${LIB_NAME}.a" PARENT_SCOPE)
+        set(${RELEASE_OUT} "${PROJ_SOURCE_ROOT}/libs/${SUB_FOLDER}/macos/release/${LIB_NAME}.a" PARENT_SCOPE)
         message(STATUS "+ Get static lib debug: ${DEBUG_OUT}")
         message(STATUS "+ Get static lib release: ${RELEASE_OUT}")
     elseif (UNIX)
-        set(${DEBUG_OUT} "${PROJECT_SOURCE_DIR}/libs/${SUB_FOLDER}/unix/debug/${LIB_NAME}.a" PARENT_SCOPE)
-        set(${RELEASE_OUT} "${PROJECT_SOURCE_DIR}/libs/${SUB_FOLDER}/unix/release/${LIB_NAME}.a" PARENT_SCOPE)
+        set(${DEBUG_OUT} "${PROJ_SOURCE_ROOT}/libs/${SUB_FOLDER}/unix/debug/${LIB_NAME}.a" PARENT_SCOPE)
+        set(${RELEASE_OUT} "${PROJ_SOURCE_ROOT}/libs/${SUB_FOLDER}/unix/release/${LIB_NAME}.a" PARENT_SCOPE)
         message(STATUS "+ Get static lib debug: ${DEBUG_OUT}")
         message(STATUS "+ Get static lib release: ${RELEASE_OUT}")
     endif()
 endfunction()
 
 add_subdirectory(src)
-add_subdirectory(test)
+
+if (RLIB_BUILD_TESTS)
+    add_subdirectory(test)
+endif()

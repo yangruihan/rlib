@@ -1,25 +1,27 @@
-aux_source_directory(. SRC_FILES)
+project(rlib_test)
 
-file(GLOB_RECURSE HEADERS ./*.h)
-file(GLOB_RECURSE GMOCK_HEADERS "${PROJECT_SOURCE_DIR}/include/gmock/*.h")
-file(GLOB_RECURSE GTEST_HEADERS "${PROJECT_SOURCE_DIR}/include/gtest/*.h")
+aux_source_directory(. RLIB_TEST_SRC)
 
-source_group("Headers" FILES ${HEADERS})
+file(GLOB_RECURSE RLIB_TEST_HEADERS ./*.h)
+file(GLOB_RECURSE GMOCK_HEADERS "${PROJ_SOURCE_ROOT}/include/gmock/*.h")
+file(GLOB_RECURSE GTEST_HEADERS "${PROJ_SOURCE_ROOT}/include/gtest/*.h")
+
+source_group("Headers" FILES ${RLIB_TEST_HEADERS})
 source_group("Headers/gmock" FILES ${GMOCK_HEADERS})
 source_group("Headers/gtest" FILES ${GTEST_HEADERS})
 
-include_directories("${PROJECT_SOURCE_DIR}/include")
-include_directories("${PROJECT_SOURCE_DIR}/include/gtest")
-include_directories("${PROJECT_SOURCE_DIR}/include/gmock")
-include_directories("${PROJECT_SOURCE_DIR}/src")
-include_directories("${PROJECT_SOURCE_DIR}/test")
+include_directories("${PROJ_SOURCE_ROOT}/include")
+include_directories("${PROJ_SOURCE_ROOT}/include/gtest")
+include_directories("${PROJ_SOURCE_ROOT}/include/gmock")
+include_directories("${PROJ_SOURCE_ROOT}/src")
+include_directories("${PROJ_SOURCE_ROOT}/test")
 
-set(EXECUTABLE_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/bin/Test")
+set(EXECUTABLE_OUTPUT_PATH "${PROJ_SOURCE_ROOT}/bin/Test")
 
 add_executable(
-    RLib_Test
-    ${SRC_FILES}
-    ${HEADERS}
+    rlib_test
+    ${RLIB_TEST_SRC}
+    ${RLIB_TEST_HEADERS}
     ${GTEST_HEADERS}
     ${GMOCK_HEADERS}
 )
@@ -34,15 +36,15 @@ message(STATUS "-+ GTEST_LIB: ${GTEST_LIB}")
 
 if (WIN32 OR MSVC)
     target_link_libraries(
-        RLib_Test
-        RLib
+        rlib_Test
+        rlib
         debug ${GMOCKD_LIB} optimized ${GMOCK_LIB}
         debug ${GTESTD_LIB} optimized ${GTEST_LIB}
     )
 else()
     target_link_libraries(
-        RLib_Test
-        RLib
+        rlib_test
+        rlib
         debug ${GMOCKD_LIB} optimized ${GMOCK_LIB}
         debug ${GTESTD_LIB} optimized ${GTEST_LIB}
         pthread

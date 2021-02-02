@@ -1,10 +1,10 @@
-aux_source_directory(. SRC_FILES)
+aux_source_directory(. RLIB_SRC)
 
-file(GLOB_RECURSE HEADERS ./*.h)
-source_group("Headers/rlib" FILES ${HEADERS})
+file(GLOB_RECURSE RLIB_HEADERS ./*.h)
+source_group("include/rlib" FILES ${RLIB_HEADERS})
 
 add_library(
-    RLib
-    ${SRC_FILES}
-    ${HEADERS}
+    rlib
+    ${RLIB_SRC}
+    ${RLIB_HEADERS}
 )
