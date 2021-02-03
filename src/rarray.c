@@ -120,6 +120,30 @@ bool array_remove(Array* array, int index)
     return true;
 }
 
+bool array_removeRange(Array* array, int index, int count)
+{
+    if (array == NULL)
+        return false;
+
+    if (index < 0 || index >= array->count)
+        return false;
+
+    if (array->count - index < count)
+        return false;
+
+    if (count < 0)
+        return false;
+
+    array->count -= count;
+
+    if (index < array->count)
+        memcpy(ARR_DATA_OFFSET(array, index), ARR_DATA_OFFSET(array, index + count), (array->count - index) * array->elemSize);
+
+    memset(ARR_DATA_OFFSET(array, array->count), 0, count * array->elemSize);
+
+    return true;
+}
+
 void array_clear(Array* array)
 {
     if (array == NULL)
@@ -151,4 +175,43 @@ bool array_eq(Array* a, Array* b)
     }
 
     return true;
+}
+
+int array_indexOf(Array* array, void* value, int elemSize)
+{
+    if (array == NULL)
+        return -1;
+
+    if (array->elemSize != elemSize)
+        return -1;
+
+    for (size_t i = 0, len = array->count; i < len; i++)
+    {
+        if (memcmp(value, ARR_DATA_OFFSET(array, i), elemSize) == 0)
+            return i;
+    }
+
+    return -1;
+}
+
+int array_lastIndexOf(Array* array, void* value, int elemSize)
+{
+    if (array == NULL)
+        return -1;
+
+    if (array->elemSize != elemSize)
+        return -1;
+
+    for (int i = array->count - 1; i >= 0; i--)
+    {
+        if (memcmp(value, ARR_DATA_OFFSET(array, i), elemSize) == 0)
+            return i;
+    }
+
+    return -1;
+}
+
+bool array_contains(Array* array, void* value, int elemSize)
+{
+    return array_indexOf(array, value, elemSize) >= 0;
 }

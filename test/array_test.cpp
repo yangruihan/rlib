@@ -224,6 +224,45 @@ namespace RLibTest
             array_free(ap);
         }
 
+        TEST_F(ArrayTest, TestRemoveRange)
+        {
+            Array a;
+            Array* ap = &a;
+            ARR_INIT(ap, int);
+
+            int ret;
+
+            for (size_t i = 0; i < TEST_COUNT; i++)
+            {
+                ARR_PUSH(ap, int, i);
+            }
+
+            ASSERT_EQ(ap->count, TEST_COUNT);
+
+            ASSERT_TRUE(array_removeRange(ap, TEST_COUNT / 2, TEST_COUNT / 2));
+
+            ASSERT_EQ(ap->count, TEST_COUNT / 2);
+            ASSERT_FALSE(array_get(ap, TEST_COUNT / 2, &ret));
+            ASSERT_TRUE(array_get(ap, TEST_COUNT / 2 - 1, &ret));
+            ASSERT_EQ(ret, TEST_COUNT / 2 - 1);
+
+            ASSERT_FALSE(array_removeRange(ap, TEST_COUNT / 2, 10));
+
+            ASSERT_TRUE(array_removeRange(ap, 0, 10));
+            ASSERT_EQ(ap->count, TEST_COUNT / 2 - 10);
+
+            ASSERT_TRUE(array_get(ap, 0, &ret));
+            ASSERT_EQ(10, ret);
+
+            ASSERT_TRUE(array_removeRange(ap, 100, 20));
+            ASSERT_EQ(ap->count, TEST_COUNT / 2 - 30);
+
+            ASSERT_TRUE(array_get(ap, 100, &ret));
+            ASSERT_EQ(130, ret);
+
+            array_free(ap);
+        }
+
         TEST_F(ArrayTest, TestClear)
         {
             Array a;
@@ -278,6 +317,89 @@ namespace RLibTest
                 ARR_PUSH(bp, int, 5);
             }
             ASSERT_TRUE(array_eq(ap, bp));
+
+            array_free(ap);
+        }
+
+        TEST_F(ArrayTest, TestIndexOf)
+        {
+            Array a;
+            Array* ap = &a;
+            ARR_INIT(ap, int);
+
+            int ret;
+
+            for (size_t i = 0; i < TEST_COUNT; i++)
+            {
+                ARR_PUSH(ap, int, i % 100);
+            }
+
+            ASSERT_EQ(ap->count, TEST_COUNT);
+
+            int toFindNumber = 1;
+            ASSERT_EQ(1, array_indexOf(ap, &toFindNumber, sizeof(int)));
+
+            toFindNumber = 99;
+            ASSERT_EQ(99, array_indexOf(ap, &toFindNumber, sizeof(int)));
+
+            toFindNumber = 100;
+            ASSERT_EQ(-1, array_indexOf(ap, &toFindNumber, sizeof(int)));
+
+            array_free(ap);
+        }
+
+        TEST_F(ArrayTest, TestLastIndexOf)
+        {
+            Array a;
+            Array* ap = &a;
+            ARR_INIT(ap, int);
+
+            int ret;
+
+            for (size_t i = 0; i < TEST_COUNT; i++)
+            {
+                ARR_PUSH(ap, int, i % 100);
+            }
+
+            ASSERT_EQ(ap->count, TEST_COUNT);
+
+            int toFindNumber = 1;
+            ASSERT_EQ(TEST_COUNT - 99, array_lastIndexOf(ap, &toFindNumber, sizeof(int)));
+
+            toFindNumber = 99;
+            ASSERT_EQ(TEST_COUNT - 1, array_lastIndexOf(ap, &toFindNumber, sizeof(int)));
+
+            toFindNumber = 100;
+            ASSERT_EQ(-1, array_lastIndexOf(ap, &toFindNumber, sizeof(int)));
+
+            array_free(ap);
+        }
+
+        TEST_F(ArrayTest, TestContains)
+        {
+            Array a;
+            Array* ap = &a;
+            ARR_INIT(ap, int);
+
+            int ret;
+
+            for (size_t i = 0; i < TEST_COUNT; i++)
+            {
+                ARR_PUSH(ap, int, i % 100);
+            }
+
+            ASSERT_EQ(ap->count, TEST_COUNT);
+
+            int toFindNumber = 1;
+            ASSERT_TRUE(array_contains(ap, &toFindNumber, sizeof(int)));
+
+            toFindNumber = 99;
+            ASSERT_TRUE(array_contains(ap, &toFindNumber, sizeof(int)));
+
+            toFindNumber = 100;
+            ASSERT_FALSE(array_contains(ap, &toFindNumber, sizeof(int)));
+
+            array_free(ap);
         }
     }
 } // namespace RLibTest
