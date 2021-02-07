@@ -11,7 +11,7 @@ namespace RLibTest
         void ArrayTest::SetUp()
         {
         }
-        
+
         void ArrayTest::TearDown()
         {
         }
@@ -46,7 +46,7 @@ namespace RLibTest
             Array a;
             Array* ap = &a;
             ARR_INIT(ap, int);
-            
+
             ARR_PUSH(ap, int, 5);
             ARR_PUSH(ap, int, 10);
             ARR_PUSH(ap, int, 15);
@@ -400,6 +400,45 @@ namespace RLibTest
             ASSERT_FALSE(array_contains(ap, &toFindNumber, sizeof(int)));
 
             array_free(ap);
+        }
+
+        TEST_F(ArrayTest, TestInsert)
+        {
+            Array a;
+            Array* ap = &a;
+            ARR_INIT(ap, int);
+
+            int ret;
+
+            for (size_t i = 0; i < TEST_COUNT; i++)
+            {
+                ARR_PUSH(ap, int, i % 100);
+            }
+
+            ASSERT_EQ(ap->count, TEST_COUNT);
+
+            int value = 9920;
+            ASSERT_TRUE(array_insert(ap, 0, &value));
+            ASSERT_EQ(ap->count, TEST_COUNT + 1);
+            ASSERT_TRUE(array_get(ap, 0, &ret));
+            ASSERT_EQ(9920, ret);
+
+            value = 123;
+            ASSERT_TRUE(array_insert(ap, TEST_COUNT + 1, &value));
+            ASSERT_EQ(ap->count, TEST_COUNT + 2);
+            ASSERT_TRUE(array_get(ap, TEST_COUNT + 1, &ret));
+            ASSERT_EQ(123, ret);
+
+            value = 2340;
+            ASSERT_TRUE(array_insert(ap, TEST_COUNT  / 2 + 20, &value));
+            ASSERT_EQ(ap->count, TEST_COUNT + 3);
+            ASSERT_TRUE(array_get(ap, TEST_COUNT  / 2 + 20, &ret));
+            ASSERT_EQ(2340, ret);
+
+            ASSERT_FALSE(array_insert(ap, -1, &value));
+            ASSERT_EQ(ap->count, TEST_COUNT + 3);
+            ASSERT_FALSE(array_insert(ap, TEST_COUNT + 4, &value));
+            ASSERT_EQ(ap->count, TEST_COUNT + 3);
         }
     }
 } // namespace RLibTest

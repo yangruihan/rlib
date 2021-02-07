@@ -36,7 +36,7 @@ message(STATUS "-+ GTEST_LIB: ${GTEST_LIB}")
 
 if (WIN32 OR MSVC)
     target_link_libraries(
-        rlib_Test
+        rlib_test
         rlib
         debug ${GMOCKD_LIB} optimized ${GMOCK_LIB}
         debug ${GTESTD_LIB} optimized ${GTEST_LIB}

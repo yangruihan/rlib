@@ -40,5 +40,6 @@ bool array_eq(Array* a, Array* b);
 int  array_indexOf(Array* array, void* value, int elemSize);
 int  array_lastIndexOf(Array* array, void* value, int elemSize);
 bool array_contains(Array* array, void* value, int elemSize);
+bool array_insert(Array* array, int index, void* value);
 
 #endif

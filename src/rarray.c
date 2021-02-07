@@ -215,3 +215,26 @@ bool array_contains(Array* array, void* value, int elemSize)
 {
     return array_indexOf(array, value, elemSize) >= 0;
 }
+
+bool array_insert(Array* array, int index, void* value)
+{
+    if (array == NULL)
+        return false;
+
+    if (index < 0 || index > array->count)
+        return false;
+    
+    if (array->count == array->capacity)
+    {
+        int newCap = GROW_CAPACITY(array->capacity);
+        array->data = ALLOCATE_ARR(array, newCap);
+        array->capacity = newCap;
+    }
+
+    if (index < array->count)
+        memcpy(ARR_DATA_OFFSET(array, index + 1), ARR_DATA_OFFSET(array, index), (array->count - index) * array->elemSize);
+
+    array->count++;
+    array_set(array, index, value);
+    return true;
+}
