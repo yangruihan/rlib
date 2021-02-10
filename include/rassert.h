@@ -1,6 +1,11 @@
 #ifndef __R_ASSERT_H__
 #define __R_ASSERT_H__
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include "rcommon.h"
 #include "rplatform.h"
 
@@ -22,6 +27,10 @@
         }
 #else
     #define R_ASSERT(x, ...)
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif // __R_ASSERT_H__

@@ -1,6 +1,11 @@
 #ifndef __R_PLATFORM_H__
 #define __R_PLATFORM_H__
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
     //define something for Windows (32-bit and 64-bit, this part is common)
     #define R_PLATFORM_WINDOWS
@@ -29,6 +34,10 @@
     #define R_PLATFORM_POSIX
 #else
     #error "Unknown compiler"
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif // __R_PLATFORM_H__

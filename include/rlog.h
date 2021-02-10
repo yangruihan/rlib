@@ -6,6 +6,11 @@
 #include <stdbool.h>
 #include <time.h>
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include "rcommon.h"
 
 struct RLogEvent
@@ -46,5 +51,9 @@ void rlog_setQuiet(bool enable);
 int  rlog_addCallback(RLogLogFn fn, void* udata, int level);
 int  rlog_addFp(FILE* fp, int level);
 void rlog_log(int level, const char* file, int line, const char* fmt, ...);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __R_LOG_H_

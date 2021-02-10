@@ -1,6 +1,11 @@
 #ifndef __R_ARRAY_H_
 #define __R_ARRAY_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include "rcommon.h"
 
 struct RArray
@@ -41,5 +46,9 @@ int  array_indexOf(Array* array, void* value, int elemSize);
 int  array_lastIndexOf(Array* array, void* value, int elemSize);
 bool array_contains(Array* array, void* value, int elemSize);
 bool array_insert(Array* array, int index, void* value);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

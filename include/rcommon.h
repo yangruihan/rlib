@@ -4,6 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #ifndef bool
     #define bool int
     #define true 1
@@ -13,5 +18,9 @@
 typedef struct RArray Array;
 typedef struct RTable Table;
 typedef struct RLogEvent LogEvent;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __R_COMMON_H_

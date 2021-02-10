@@ -1,6 +1,11 @@
 #ifndef __R_MEM_H_
 #define __R_MEM_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include "rcommon.h"
 
 #define ALLOCATE(type, count) \
@@ -19,5 +24,9 @@
     reallocate(p, sizeof(type) * (oldCnt), 0)
 
 void* reallocate(void* prev, size_t oldSize, size_t newSize);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

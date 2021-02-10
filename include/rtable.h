@@ -3,6 +3,11 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include "rcommon.h"
 
 struct RTable
@@ -36,5 +41,9 @@ bool table_del(Table* t, uint32_t key);
 void table_keys(Table* t, uint32_t* keys);
 void table_iter(Table* t, TableIterFunc func);
 bool table_eq(Table* a, Table* b);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __R_TABLE_H_
