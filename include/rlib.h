@@ -11,6 +11,7 @@ extern "C"
 #include "./rmem.h"
 #include "./rarray.h"
 #include "./rtable.h"
+#include "./rfile.h"
 
 #ifdef __cplusplus
 }
