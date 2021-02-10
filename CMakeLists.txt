@@ -60,6 +60,8 @@ function(get_static_lib_path SUB_FOLDER LIB_NAME DEBUG_OUT RELEASE_OUT)
     endif()
 endfunction()
 
+include_directories("${PROJ_SOURCE_ROOT}/include")
+
 add_subdirectory(src)
 
 if (RLIB_BUILD_TESTS)

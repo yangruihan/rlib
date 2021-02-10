@@ -1,8 +1,6 @@
 aux_source_directory(. RLIB_SRC)
 
-include_directories(${PROJECT_SOURCE_DIR}/src)
-
-file(GLOB_RECURSE RLIB_HEADERS ./*.h)
+file(GLOB_RECURSE RLIB_HEADERS ../include/*.h)
 source_group("include/rlib" FILES ${RLIB_HEADERS})
 
 add_library(

@@ -3,17 +3,14 @@ project(rlib_test)
 aux_source_directory(. RLIB_TEST_SRC)
 
 file(GLOB_RECURSE RLIB_TEST_HEADERS ./*.h)
-file(GLOB_RECURSE GMOCK_HEADERS "${PROJ_SOURCE_ROOT}/include/gmock/*.h")
-file(GLOB_RECURSE GTEST_HEADERS "${PROJ_SOURCE_ROOT}/include/gtest/*.h")
+file(GLOB_RECURSE GMOCK_HEADERS "${PROJ_SOURCE_ROOT}/libs/gtest/include/gmock/*.h")
+file(GLOB_RECURSE GTEST_HEADERS "${PROJ_SOURCE_ROOT}/libs/gtest/include/gtest/*.h")
 
 source_group("Headers" FILES ${RLIB_TEST_HEADERS})
 source_group("Headers/gmock" FILES ${GMOCK_HEADERS})
 source_group("Headers/gtest" FILES ${GTEST_HEADERS})
 
-include_directories("${PROJ_SOURCE_ROOT}/include")
-include_directories("${PROJ_SOURCE_ROOT}/include/gtest")
-include_directories("${PROJ_SOURCE_ROOT}/include/gmock")
-include_directories("${PROJ_SOURCE_ROOT}/src")
+include_directories("${PROJ_SOURCE_ROOT}/libs/gtest/include")
 include_directories("${PROJ_SOURCE_ROOT}/test")
 
 set(EXECUTABLE_OUTPUT_PATH "${PROJ_SOURCE_ROOT}/bin/Test")

@@ -6,11 +6,11 @@ extern "C"
 {
 #endif
 
-#include "rcommon.h"
-#include "rlog.h"
-#include "rmem.h"
-#include "rarray.h"
-#include "rtable.h"
+#include "./rcommon.h"
+#include "./rlog.h"
+#include "./rmem.h"
+#include "./rarray.h"
+#include "./rtable.h"
 
 #ifdef __cplusplus
 }
