@@ -12,6 +12,8 @@ extern "C"
 #include "./rarray.h"
 #include "./rtable.h"
 #include "./rfile.h"
+#include "./rplatform.h"
+#include "./rassert.h"
 
 #ifdef __cplusplus
 }

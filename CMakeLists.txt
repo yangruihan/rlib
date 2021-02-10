@@ -9,20 +9,24 @@ set(PROJ_SOURCE_ROOT ${PROJECT_SOURCE_DIR})
 
 # ---------- OPTIONS ----------
 option(DEBUG "Debug Version" off)
-option(COMMAND_LINE "Command Line Flag" off)
-option(LOG_USE_COLOR "Log use color" on)
+option(RLIB_COMMAND_LINE "Command Line Flag" off)
+option(RLIB_LOG_USE_COLOR "Log use color" on)
 option(RLIB_BUILD_TESTS "Build the RLib test programs" on)
+option(RLIB_ENABLE_ASSERT "Enable Assert" on)
 
 message(STATUS "* DEBUG FLAG: ${DEBUG}")
-message(STATUS "* COMMAND LINE FLAG: ${COMMAND_LINE}")
+message(STATUS "* COMMAND LINE FLAG: ${RLIB_COMMAND_LINE}")
+message(STATUS "* LOG USE COLOR: ${RLIB_LOG_USE_COLOR}")
+message(STATUS "* RLIB BUILD TESTS: ${RLIB_BUILD_TESTS}")
+message(STATUS "* RLIB ENABLE ASSERT: ${RLIB_ENABLE_ASSERT}")
 
-if(COMMAND_LINE)
+if(RLIB_COMMAND_LINE)
     add_definitions(-DCOMMAND_LINE)
-endif(COMMAND_LINE)
+endif(RLIB_COMMAND_LINE)
 
-if(LOG_USE_COLOR)
+if(RLIB_LOG_USE_COLOR)
     add_definitions(-DLOG_USE_COLOR)
-endif(LOG_USE_COLOR)
+endif(RLIB_LOG_USE_COLOR)
 
 if(WIN32 OR MSVC)
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
