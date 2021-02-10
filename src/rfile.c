@@ -1,5 +1,15 @@
 #include "rfile.h"
 
+#include <string.h>
+
+#include "rplatform.h"
+
+#ifdef R_PLATFORM_WINDOWS
+    #define SEP_CHAR '\\'
+#else
+    #define SEP_CHAR '/'
+#endif
+
 bool readFile(const char* path, char** content, int* size)
 {
     FILE* file = fopen(path, "rb");
@@ -31,4 +41,38 @@ bool readFile(const char* path, char** content, int* size)
     *content = buffer;
     *size = bytesRead;
     return true;
+}
+
+void combinePath(const char* path, const char* path2, char** ret)
+{
+    if (path == NULL && path2 == NULL)
+    {
+        *ret = NULL;
+        return;
+    }
+    else if (path == NULL && path2 != NULL)
+    {
+        *ret = ALLOCATE(char, strlen(path2) + 1);
+        strcpy(*ret, path2);
+        return;
+    }
+    else if (path != NULL && path2 == NULL)
+    {
+        *ret = ALLOCATE(char, strlen(path) + 1);
+        strcpy(*ret, path);
+        return;
+    }
+
+    int pathLen = strlen(path);
+    int path2Len = strlen(path);
+
+    *ret = ALLOCATE(char, pathLen + path2Len + 2);
+
+    strcpy(*ret, path);
+    if ((*ret)[pathLen - 1] == SEP_CHAR)
+        pathLen--;
+    else
+        (*ret)[pathLen] = SEP_CHAR;
+
+    strcpy(*ret + 1 + pathLen, path2);
 }

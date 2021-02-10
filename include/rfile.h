@@ -12,6 +12,7 @@ extern "C"
 #include "rmem.h"
 
 bool readFile(const char* path, /* out */ char** content, /* out */ int* fileSize);
+void combinePath(const char* path, const char* path2, /* out */ char** ret);
 
 #ifdef __cplusplus
 }
