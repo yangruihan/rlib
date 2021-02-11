@@ -74,5 +74,8 @@ void combinePath(const char* path, const char* path2, char** ret)
     else
         (*ret)[pathLen] = SEP_CHAR;
 
-    strcpy(*ret + 1 + pathLen, path2);
+    if (path2[0] == SEP_CHAR)
+        strcpy(*ret + 1 + pathLen, path2 + 1);
+    else
+        strcpy(*ret + 1 + pathLen, path2);
 }
