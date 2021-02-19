@@ -11,8 +11,8 @@ extern "C"
 #include "rlog.h"
 #include "rmem.h"
 
-bool readFile(const char* path, /* out */ char** content, /* out */ int* fileSize);
-void combinePath(const char* path, const char* path2, /* out */ char** ret);
+RLIB_API bool readFile(const char* path, /* out | memory alloc*/ char** content, /* out */ int* fileSize);
+RLIB_API void combinePath(const char* path, const char* path2, /* out | memory alloc */ char** ret);
 
 #ifdef __cplusplus
 }

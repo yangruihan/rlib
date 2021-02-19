@@ -4,6 +4,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "rplatform.h"
+
+#ifdef R_PLATFORM_WINDOWS
+    #ifdef R_DYNAMIC_LINK
+        #ifdef R_BUILD
+            #define RLIB_API __declspec(dllexport)
+        #else
+            #define RLIB_API __declspec(dllimport)
+        #endif
+    #else
+        #define RLIB_API extern
+    #endif
+#else
+    #define RLIB_API extern
+#endif
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -17,6 +33,7 @@ extern "C"
 
 typedef struct RArray Array;
 typedef struct RTable Table;
+typedef struct RStack Stack;
 typedef struct RLogEvent LogEvent;
 
 #ifdef __cplusplus

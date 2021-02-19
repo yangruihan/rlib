@@ -44,13 +44,13 @@ typedef enum RLogLevel
 #define RLOG_ERROR(...) rlog_log(RLOG_ERROR, __FILE__, __LINE__, __VA_ARGS__)
 #define RLOG_FATAL(...) rlog_log(RLOG_FATAL, __FILE__, __LINE__, __VA_ARGS__)
 
-const char* rlog_levelString(int level);
-void rlog_setLock(RLogLockFn fn, void* udata);
-void rlog_setLevel(int level);
-void rlog_setQuiet(bool enable);
-int  rlog_addCallback(RLogLogFn fn, void* udata, int level);
-int  rlog_addFp(FILE* fp, int level);
-void rlog_log(int level, const char* file, int line, const char* fmt, ...);
+RLIB_API const char* rlog_levelString(int level);
+RLIB_API void rlog_setLock(RLogLockFn fn, void* udata);
+RLIB_API void rlog_setLevel(int level);
+RLIB_API void rlog_setQuiet(bool enable);
+RLIB_API int  rlog_addCallback(RLogLogFn fn, void* udata, int level);
+RLIB_API int  rlog_addFp(FILE* fp, int level);
+RLIB_API void rlog_log(int level, const char* file, int line, const char* fmt, ...);
 
 #ifdef __cplusplus
 }

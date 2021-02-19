@@ -23,7 +23,7 @@ extern "C"
 #define FREE_ARRAY(type, p, oldCnt) \
     reallocate(p, sizeof(type) * (oldCnt), 0)
 
-void* reallocate(void* prev, size_t oldSize, size_t newSize);
+RLIB_API void* reallocate(void* prev, size_t oldSize, size_t newSize);
 
 #ifdef __cplusplus
 }

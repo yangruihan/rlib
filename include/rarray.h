@@ -31,21 +31,21 @@ struct RArray
         array_set(array, index, &_); \
     } while(false)
 
-void array_init(Array* array, int cap, int elemSize);
-void array_free(Array* array);
+RLIB_API void array_init(Array* array, int cap, int elemSize);
+RLIB_API void array_free(Array* array);
 
-void array_push(Array* array, void* value);
-bool array_pop(Array* array, void* value);
-bool array_set(Array* array, int index, void* value);
-bool array_get(Array* array, int index, void* value);
-bool array_remove(Array* array, int index);
-bool array_removeRange(Array* array, int index, int count);
-void array_clear(Array* array);
-bool array_eq(Array* a, Array* b);
-int  array_indexOf(Array* array, void* value, int elemSize);
-int  array_lastIndexOf(Array* array, void* value, int elemSize);
-bool array_contains(Array* array, void* value, int elemSize);
-bool array_insert(Array* array, int index, void* value);
+RLIB_API void array_push(Array* array, void* value);
+RLIB_API bool array_pop(Array* array, /* out */ void* value);
+RLIB_API bool array_set(Array* array, int index, void* value);
+RLIB_API bool array_get(Array* array, int index, void* value);
+RLIB_API bool array_remove(Array* array, int index);
+RLIB_API bool array_removeRange(Array* array, int index, int count);
+RLIB_API void array_clear(Array* array);
+RLIB_API bool array_eq(Array* a, Array* b);
+RLIB_API int  array_indexOf(Array* array, void* value, int elemSize);
+RLIB_API int  array_lastIndexOf(Array* array, void* value, int elemSize);
+RLIB_API bool array_contains(Array* array, void* value, int elemSize);
+RLIB_API bool array_insert(Array* array, int index, void* value);
 
 #ifdef __cplusplus
 }

@@ -11,15 +11,18 @@ set(PROJ_SOURCE_ROOT ${PROJECT_SOURCE_DIR})
 option(DEBUG "Debug Version" off)
 option(RLIB_COMMAND_LINE "Command Line Flag" off)
 option(RLIB_LOG_USE_COLOR "Log use color" on)
-option(RLIB_BUILD_TESTS "Build the RLib test programs" on)
 option(RLIB_ENABLE_ASSERT "Enable Assert" on)
+option(RLIB_DYNAMIC_LINK "Dynamic Link" off)
+option(RLIB_BUILD_TESTS "Build the RLib test programs" on)
 
 message(STATUS "* DEBUG FLAG: ${DEBUG}")
 message(STATUS "* COMMAND LINE FLAG: ${RLIB_COMMAND_LINE}")
 message(STATUS "* LOG USE COLOR: ${RLIB_LOG_USE_COLOR}")
-message(STATUS "* RLIB BUILD TESTS: ${RLIB_BUILD_TESTS}")
 message(STATUS "* RLIB ENABLE ASSERT: ${RLIB_ENABLE_ASSERT}")
+message(STATUS "* RLIB DYNAMIC LINK: ${RLIB_DYNAMIC_LINK}")
+message(STATUS "* RLIB BUILD TESTS: ${RLIB_BUILD_TESTS}")
 
+# ---------- MACROS ----------
 if(RLIB_COMMAND_LINE)
     add_definitions(-DCOMMAND_LINE)
 endif(RLIB_COMMAND_LINE)
@@ -27,6 +30,12 @@ endif(RLIB_COMMAND_LINE)
 if(RLIB_LOG_USE_COLOR)
     add_definitions(-DLOG_USE_COLOR)
 endif(RLIB_LOG_USE_COLOR)
+
+if(RLIB_DYNAMIC_LINK)
+    add_definitions(-DR_DYNAMIC_LINK)
+endif(RLIB_DYNAMIC_LINK)
+
+add_definitions(-DR_BUILD)
 
 if(WIN32 OR MSVC)
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")

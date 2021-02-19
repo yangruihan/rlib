@@ -33,14 +33,14 @@ typedef void (*TableIterFunc) (uint32_t key, void* value);
         table_set(t, key, &_); \
     } while(false)
 
-void table_init(Table* t, int elemSize);
-void table_free(Table* t);
-bool table_get(Table* t, uint32_t key, void* val);
-bool table_set(Table* t, uint32_t key, void* val);
-bool table_del(Table* t, uint32_t key);
-void table_keys(Table* t, uint32_t* keys);
-void table_iter(Table* t, TableIterFunc func);
-bool table_eq(Table* a, Table* b);
+RLIB_API void table_init(Table* t, int elemSize);
+RLIB_API void table_free(Table* t);
+RLIB_API bool table_get(Table* t, uint32_t key, void* val);
+RLIB_API bool table_set(Table* t, uint32_t key, void* val);
+RLIB_API bool table_del(Table* t, uint32_t key);
+RLIB_API void table_keys(Table* t, uint32_t* keys);
+RLIB_API void table_iter(Table* t, TableIterFunc func);
+RLIB_API bool table_eq(Table* a, Table* b);
 
 #ifdef __cplusplus
 }
