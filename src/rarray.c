@@ -34,7 +34,9 @@ void array_free(Array* array)
     if (array == NULL)
         return;
 
-    FREE_ARRAY(char, array->data, array->capacity * array->elemSize);
+    if (array->data)
+        FREE_ARRAY(char, array->data, array->capacity * array->elemSize);
+
     array->data = NULL;
     array->capacity = 0;
     array->count = 0;
@@ -88,7 +90,7 @@ bool array_set(Array* array, int index, void* value)
     {
         memset(ARR_DATA_OFFSET(array, index), 0, array->elemSize);
     }
-    
+
     return true;
 }
 
@@ -112,8 +114,8 @@ bool array_remove(Array* array, int index)
     if (index < 0 || index >= array->count)
         return false;
 
-    memcpy(ARR_DATA_OFFSET(array, index), 
-           ARR_DATA_OFFSET(array, index + 1), 
+    memcpy(ARR_DATA_OFFSET(array, index),
+           ARR_DATA_OFFSET(array, index + 1),
            array->elemSize * (array->count - index - 1));
 
     array->count--;
@@ -168,7 +170,7 @@ bool array_eq(Array* a, Array* b)
 
     for (size_t i = 0; i < a->count; i++)
     {
-        if (memcmp(ARR_DATA_OFFSET(a, i), 
+        if (memcmp(ARR_DATA_OFFSET(a, i),
                    ARR_DATA_OFFSET(b, i),
                    a->elemSize) != 0)
             return false;
@@ -223,7 +225,7 @@ bool array_insert(Array* array, int index, void* value)
 
     if (index < 0 || index > array->count)
         return false;
-    
+
     if (array->count == array->capacity)
     {
         int newCap = GROW_CAPACITY(array->capacity);
@@ -236,5 +238,36 @@ bool array_insert(Array* array, int index, void* value)
 
     array->count++;
     array_set(array, index, value);
+    return true;
+}
+
+bool array_setCapacity(Array* array, int capacity)
+{
+    if (array == NULL)
+        return false;
+
+    if (capacity <= array->capacity)
+        return false;
+
+    array->data = ALLOCATE_ARR(array, capacity);
+    array->capacity = capacity;
+
+    return true;
+}
+
+bool array_clone(Array* a, Array* dest)
+{
+    if (a == NULL || dest == NULL)
+        return false;
+
+    array_free(dest);
+
+    dest->elemSize = a->elemSize;
+    dest->count = a->count;
+    dest->capacity = a->capacity;
+    dest->data = ALLOCATE_ARR(dest, a->capacity);
+
+    memcpy(dest->data, a->data, a->count * a->elemSize);
+
     return true;
 }

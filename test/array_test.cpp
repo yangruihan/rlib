@@ -440,5 +440,54 @@ namespace RLibTest
             ASSERT_FALSE(array_insert(ap, TEST_COUNT + 4, &value));
             ASSERT_EQ(ap->count, TEST_COUNT + 3);
         }
+
+        TEST_F(ArrayTest, TestSetCap)
+        {
+            Array a;
+            Array* ap = &a;
+            ARR_INIT(ap, int);
+            ASSERT_TRUE(ap->data != nullptr);
+            ASSERT_EQ(ap->capacity, 8);
+            ASSERT_EQ(ap->count, 0);
+            ASSERT_EQ(ap->elemSize, sizeof(int));
+
+            ASSERT_FALSE(array_setCapacity(ap, 7));
+            ASSERT_EQ(ap->capacity, 8);
+
+            ASSERT_TRUE(array_setCapacity(ap, 100));
+            ASSERT_EQ(ap->capacity, 100);
+
+            array_free(ap);
+        }
+
+        TEST_F(ArrayTest, TestClone)
+        {
+            Array a;
+            Array* ap = &a;
+            ARR_INIT(ap, int);
+
+            int ret;
+
+            for (size_t i = 0; i < TEST_COUNT; i++)
+            {
+                ARR_PUSH(ap, int, i);
+                ASSERT_TRUE(array_get(ap, i, &ret));
+                ASSERT_EQ(ret, i);
+            }
+
+            ASSERT_EQ(ap->count, TEST_COUNT);
+
+            Array b;
+            Array* bp = &b;
+            ARR_INIT_CAP(bp, int, 0);
+            array_clone(ap, bp);
+
+            ASSERT_EQ(bp->count, TEST_COUNT);
+            for (size_t i = 0; i < TEST_COUNT; i++)
+            {
+                ASSERT_TRUE(array_get(bp, i, &ret));
+                ASSERT_EQ(ret, i);
+            }
+        }
     }
 } // namespace RLibTest

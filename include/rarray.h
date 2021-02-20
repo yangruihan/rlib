@@ -46,6 +46,8 @@ RLIB_API int  array_indexOf(Array* array, void* value, int elemSize);
 RLIB_API int  array_lastIndexOf(Array* array, void* value, int elemSize);
 RLIB_API bool array_contains(Array* array, void* value, int elemSize);
 RLIB_API bool array_insert(Array* array, int index, void* value);
+RLIB_API bool array_setCapacity(Array* array, int capacity);
+RLIB_API bool array_clone(Array* a, Array* dest);
 
 #ifdef __cplusplus
 }
