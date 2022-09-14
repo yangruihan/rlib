@@ -221,7 +221,7 @@ bool table_del(Table* t, uint32_t key)
 
     if (found)
     {
-        memset(entry, 0, t->_entrySize);
+        *KEY(entry) = 0;
         t->count--;
     }
 
