@@ -28,8 +28,22 @@ static char* findEntry(char* entries, int elemSize,
     uint32_t index = key % cap;
     char* tombstone = NULL;
 
+    uint32_t find_cnt = 0;
     for(;;)
     {
+        if (find_cnt > cap)
+        {
+            if (found != NULL) *found = false;
+
+            if (tombstone == NULL)
+            {
+                printf("rtable find entry error, cannot find a valid entry");
+                exit(-1);
+            }
+
+            return tombstone;
+        }
+
         char* entry = ENTRIES_DATA_OFFSET(entries, elemSize, index);
         uint32_t entry_key = *KEY(entry);
 
@@ -53,6 +67,7 @@ static char* findEntry(char* entries, int elemSize,
         }
 
         index = (index + 1) % cap;
+        find_cnt++;
     }
 }
 
